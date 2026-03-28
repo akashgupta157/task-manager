@@ -16,6 +16,7 @@ import {
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { LockIcon, MailIcon, UserIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -32,6 +33,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignupPage() {
+  const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,6 +59,7 @@ export default function SignupPage() {
     }
 
     toast.success("Account created successfully");
+    router.push("/dashboard");
   };
 
   return (
