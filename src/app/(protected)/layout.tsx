@@ -2,6 +2,7 @@ import { Providers } from "./providers";
 import { redirect } from "next/navigation";
 import { Header } from "@/components/header";
 import { createClient } from "@/lib/supabase/server";
+import { UserProvider } from "@/contexts/userContext";
 
 export default async function ProtectedLayout({
   children,
@@ -21,10 +22,12 @@ export default async function ProtectedLayout({
 
   return (
     <Providers>
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        {children}
-      </div>
+      <UserProvider>
+        <div className="flex min-h-screen flex-col font-mono">
+          <Header />
+          {children}
+        </div>
+      </UserProvider>
     </Providers>
   );
 }

@@ -3,30 +3,34 @@
 import axios from "axios";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useEffect } from "react";
 import { LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { User as UserType } from "@/types";
+import { useUser } from "@/contexts/userContext";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-interface Profile {
-  username: string;
-  role: string;
-  email: string;
-}
-
 export function Header() {
+  const { setUser } = useUser();
   const pathname = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: profile } = useQuery<Profile>({
+  const { data: profile } = useQuery<UserType>({
     queryKey: ["profile"],
     queryFn: async () => {
       const { data } = await axios.get("/api/profile");
       return data;
     },
   });
+
+  useEffect(() => {
+    if (profile) {
+      setUser(profile);
+    }
+  }, [profile, setUser]);
 
   const getBreadcrumb = () => {
     const segments = pathname.split("/").filter(Boolean);
