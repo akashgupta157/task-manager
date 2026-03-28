@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/field";
 import client from "@/lib/supabase/client";
 import { toast } from "sonner";
+import { LockIcon, MailIcon } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -55,11 +56,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
+    <div className="font-mono flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Login</CardTitle>
+            <CardTitle className="text-xl font-mono">Login</CardTitle>
           </CardHeader>
 
           <CardContent>
@@ -68,6 +69,7 @@ export default function LoginPage() {
                 <Field>
                   <FieldLabel htmlFor="email">Email</FieldLabel>
                   <Input
+                    leftIcon={<MailIcon className="h-4 w-4" />}
                     id="email"
                     type="email"
                     placeholder="m@example.com"
@@ -83,8 +85,10 @@ export default function LoginPage() {
                 <Field>
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <Input
+                    leftIcon={<LockIcon className="h-4 w-4" />}
                     id="password"
                     type="password"
+                    placeholder="********"
                     {...form.register("password")}
                   />
                   {form.formState.errors.password && (

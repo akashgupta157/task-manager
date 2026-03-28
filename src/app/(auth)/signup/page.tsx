@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/field";
 import client from "@/lib/supabase/client";
 import { toast } from "sonner";
+import { LockIcon, MailIcon, UserIcon } from "lucide-react";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -59,11 +60,13 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
+    <div className="font-mono flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Create your account</CardTitle>
+            <CardTitle className="text-xl font-mono">
+              Create your account
+            </CardTitle>
           </CardHeader>
 
           <CardContent>
@@ -72,6 +75,7 @@ export default function SignupPage() {
                 <Field>
                   <FieldLabel htmlFor="name">Name</FieldLabel>
                   <Input
+                    leftIcon={<UserIcon className="h-4 w-4" />}
                     id="name"
                     placeholder="John Doe"
                     {...form.register("username")}
@@ -86,6 +90,7 @@ export default function SignupPage() {
                 <Field>
                   <FieldLabel htmlFor="email">Email</FieldLabel>
                   <Input
+                    leftIcon={<MailIcon className="h-4 w-4" />}
                     id="email"
                     type="email"
                     placeholder="m@example.com"
@@ -101,8 +106,10 @@ export default function SignupPage() {
                 <Field>
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <Input
+                    leftIcon={<LockIcon className="h-4 w-4" />}
                     id="password"
                     type="password"
+                    placeholder="********"
                     {...form.register("password")}
                   />
                   {form.formState.errors.password && (
