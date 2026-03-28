@@ -13,7 +13,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import client from "@/lib/supabase/client";
+import { supabaseBrowser } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { LockIcon, MailIcon, UserIcon } from "lucide-react";
 
@@ -42,7 +42,7 @@ export default function SignupPage() {
   });
 
   const onSubmit = async (data: FormValues) => {
-    const { error } = await client.auth.signUp({
+    const { error } = await supabaseBrowser().auth.signUp({
       email: data.email,
       password: data.password,
       options: {
