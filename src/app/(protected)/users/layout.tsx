@@ -13,7 +13,7 @@ export default function UsersLayout({
 
   useEffect(() => {
     if (user && user.role !== "admin") {
-      redirect("/");
+      redirect("/dashboard");
     }
   }, [user]);
 
