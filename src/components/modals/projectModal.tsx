@@ -109,9 +109,11 @@ export function ProjectModal({
             </Button>
           ))}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md font-mono">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Project" : "New Project"}</DialogTitle>
+          <DialogTitle className="font-mono">
+            {isEdit ? "Edit Project" : "New Project"}
+          </DialogTitle>
           <DialogDescription>
             {isEdit
               ? "Update your project details below."

@@ -1,5 +1,6 @@
 import { Button } from "./ui/button";
 import type { Project } from "@/types";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/contexts/userContext";
 import { FolderIcon, MoreVertical } from "lucide-react";
 import {
@@ -18,8 +19,12 @@ export function ProjectCard({
   onEdit: (project: Project) => void;
 }) {
   const { user } = useUser();
+  const router = useRouter();
   return (
-    <Card className="group hover:shadow-md transition-shadow">
+    <Card
+      className="group hover:shadow-md transition-shadow cursor-pointer"
+      onClick={() => router.push(`/projects/${project.id}`)}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
