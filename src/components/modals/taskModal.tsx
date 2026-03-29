@@ -135,7 +135,11 @@ export function TaskModal({
   };
 
   const canCreate = user?.role === "admin" || user?.role === "manager";
-  const canEdit = user?.role === "admin" || user?.role === "manager";
+  const canEdit =
+    user?.role === "admin" ||
+    (user?.role === "manager" && task?.created_by === user?.id);
+  const canEditStatus =
+    canEdit || (user?.role === "employee" && task?.assigned_to === user?.id);
   const selectedUser = users.find((u) => u.id === form.watch("assigned_to"));
 
   return (
@@ -171,6 +175,7 @@ export function TaskModal({
                   type="text"
                   id="title"
                   {...form.register("title")}
+                  disabled={!canEdit}
                 />
                 {form.formState.errors.title && (
                   <FieldDescription className="text-destructive">
@@ -186,6 +191,7 @@ export function TaskModal({
                   className="flex min-h-[80px] w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-base transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 md:text-sm resize-none"
                   placeholder="Enter task description"
                   {...form.register("description")}
+                  disabled={!canEdit}
                 />
                 {form.formState.errors.description && (
                   <FieldDescription className="text-destructive">
@@ -202,6 +208,7 @@ export function TaskModal({
                   onValueChange={(value) =>
                     form.setValue("project_id", value, { shouldValidate: true })
                   }
+                  disabled={!canEdit}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a project" />
@@ -233,6 +240,7 @@ export function TaskModal({
                     onValueChange={(value) =>
                       form.setValue("status", value as FormValues["status"])
                     }
+                    disabled={!canEditStatus}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select status" />
@@ -265,6 +273,7 @@ export function TaskModal({
                       shouldValidate: true,
                     })
                   }
+                  disabled={!canEdit}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select an assignee">
@@ -325,24 +334,28 @@ export function TaskModal({
               </Button>
             )}
 
-            <Button
-              type="submit"
-              disabled={form.formState.isSubmitting || !form.formState.isValid}
-            >
-              {form.formState.isSubmitting ? (
-                <span className="animate-pulse">Saving...</span>
-              ) : isEdit ? (
-                <>
-                  <Pencil className="size-4" />
-                  Save Changes
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 className="size-4" />
-                  Create Task
-                </>
-              )}
-            </Button>
+            {(canEdit || canEditStatus) && (
+              <Button
+                type="submit"
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isValid
+                }
+              >
+                {form.formState.isSubmitting ? (
+                  <span className="animate-pulse">Saving...</span>
+                ) : isEdit ? (
+                  <>
+                    <Pencil className="size-4" />
+                    Save Changes
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="size-4" />
+                    Create Task
+                  </>
+                )}
+              </Button>
+            )}
           </DialogFooter>
         </form>
       </DialogContent>

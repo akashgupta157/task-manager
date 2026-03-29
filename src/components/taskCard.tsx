@@ -1,7 +1,6 @@
 import { Button } from "./ui/button";
 import type { Task } from "@/types";
 import { MoreVertical } from "lucide-react";
-import { useUser } from "@/contexts/userContext";
 import {
   Card,
   CardHeader,
@@ -17,9 +16,6 @@ interface TaskCardProps {
 }
 
 export function TaskCard({ task, onEdit }: TaskCardProps) {
-  const { user } = useUser();
-  const canEdit = user?.role === "admin" || user?.role === "manager";
-
   return (
     <Card className="group hover:shadow-md transition-shadow mb-4">
       <CardHeader className="pb-3">
@@ -27,16 +23,15 @@ export function TaskCard({ task, onEdit }: TaskCardProps) {
           <div className="flex items-center gap-2 min-w-0">
             <CardTitle className="truncate text-lg">{task.title}</CardTitle>
           </div>
-          {canEdit && (
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              className="opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={() => onEdit(task)}
-            >
-              <MoreVertical className="size-4" />
-            </Button>
-          )}
+
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="opacity-0 group-hover:opacity-100 transition-opacity"
+            onClick={() => onEdit(task)}
+          >
+            <MoreVertical className="size-4" />
+          </Button>
         </div>
       </CardHeader>
       <CardContent>
