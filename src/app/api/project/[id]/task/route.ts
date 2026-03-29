@@ -16,7 +16,7 @@ export async function GET(
 
   const { data: tasks, error } = await supabase
     .from("tasks")
-    .select("*")
+    .select("* , assignedTo:profiles(username)")
     .eq("project_id", id);
 
   if (error) {

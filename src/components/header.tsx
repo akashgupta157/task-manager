@@ -4,10 +4,10 @@ import axios from "axios";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useEffect } from "react";
-import { LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { User as UserType } from "@/types";
 import { useUser } from "@/contexts/userContext";
+import { Home, LogOut, User } from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -58,6 +58,12 @@ export function Header() {
   return (
     <header className="font-mono flex h-14 items-center justify-between border-b px-6">
       <nav className="flex items-center gap-2 text-sm">
+        <Link
+          href="/dashboard"
+          className="text-muted-foreground hover:text-foreground"
+        >
+          <Home className="h-4 w-4" />
+        </Link>
         {breadcrumbs.map((crumb, index) => (
           <span key={crumb.href} className="flex items-center gap-2">
             {index > 0 && <span className="text-muted-foreground">/</span>}

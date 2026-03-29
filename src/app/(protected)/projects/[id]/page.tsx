@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import TaskBoard from "@/components/taskBoard";
 import { useQuery } from "@tanstack/react-query";
 import { ListTodo, Loader2 } from "lucide-react";
+import { TaskModal } from "@/components/modals/taskModal";
 
 export default function ProjectDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -30,12 +31,15 @@ export default function ProjectDetailsPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold">
-        Project - {projectDetails?.project?.title}
-      </h1>
-      <p className="text-muted-foreground">
-        {projectDetails?.project?.description}
-      </p>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">
+          Project - {projectDetails?.project?.title}
+        </h1>
+        <p className="text-muted-foreground">
+          {projectDetails?.project?.description}
+        </p>
+        <TaskModal onSuccess={() => refetch()} />
+      </div>
 
       <div>
         {projectDetails?.tasks.length > 0 ? (
