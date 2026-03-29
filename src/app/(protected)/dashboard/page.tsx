@@ -45,7 +45,7 @@ export default function DashboardPage() {
               className="cursor-pointer"
             >
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-mono font-medium text-muted-foreground">
                   Total Users
                 </CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
@@ -66,7 +66,7 @@ export default function DashboardPage() {
             className="cursor-pointer"
           >
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
+              <CardTitle className="text-sm font-mono font-medium text-muted-foreground">
                 Total Projects
               </CardTitle>
               <FolderKanban className="h-4 w-4 text-muted-foreground" />
@@ -84,7 +84,7 @@ export default function DashboardPage() {
             className="cursor-pointer"
           >
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
+              <CardTitle className="text-sm font-mono font-medium text-muted-foreground">
                 Total Tasks
               </CardTitle>
               <CheckSquare className="h-4 w-4 text-muted-foreground" />

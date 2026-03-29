@@ -69,13 +69,9 @@ export function ProjectModal({
 
   const handleSubmit = async (data: FormValues) => {
     try {
-      if (isEdit) {
-        await axios.put(`/api/project/${project.id}`, data);
-        toast.success("Project updated successfully");
-      } else {
-        await axios.post("/api/project", data);
-        toast.success("Project created successfully");
-      }
+      if (!project) return;
+      await axios.put(`/api/project/${project.id}`, data);
+      toast.success("Project updated successfully");
       setOpen(false);
       onSuccess?.();
     } catch (error) {
@@ -99,25 +95,14 @@ export function ProjectModal({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {trigger ||
-          isEdit ||
-          (user?.role === "admin" && (
-            <Button>
-              <FolderIcon className="size-4" />
-              New Project
-            </Button>
-          ))}
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-md font-mono">
         <DialogHeader>
           <DialogTitle className="font-mono">
-            {isEdit ? "Edit Project" : "New Project"}
+            {isEdit && "Edit Project"}
           </DialogTitle>
           <DialogDescription>
-            {isEdit
-              ? "Update your project details below."
-              : "Create a new project to organize your tasks."}
+            {isEdit && "Update your project details below."}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -174,16 +159,13 @@ export function ProjectModal({
             >
               {form.formState.isSubmitting ? (
                 <span className="animate-pulse">Saving...</span>
-              ) : isEdit ? (
-                <>
-                  <Pencil className="size-4" />
-                  Save Changes
-                </>
               ) : (
-                <>
-                  <FolderIcon className="size-4" />
-                  Create Project
-                </>
+                isEdit && (
+                  <>
+                    <Pencil className="size-4" />
+                    Save Changes
+                  </>
+                )
               )}
             </Button>
           </DialogFooter>

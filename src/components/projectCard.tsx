@@ -31,14 +31,17 @@ export function ProjectCard({
             <div className="flex shrink-0 items-center justify-center rounded-lg bg-primary/10 p-2">
               <FolderIcon className="size-4 text-primary" />
             </div>
-            <CardTitle className="truncate text-lg">{project.title}</CardTitle>
+            <CardTitle className="truncate text-lg font-mono">{project.title}</CardTitle>
           </div>
           {user?.role === "admin" && (
             <Button
               variant="ghost"
               size="icon-sm"
               className="opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={() => onEdit(project)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(project);
+              }}
             >
               <MoreVertical className="size-4" />
             </Button>

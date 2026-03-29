@@ -21,7 +21,9 @@ export function TaskCard({ task, onEdit }: TaskCardProps) {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
-            <CardTitle className="truncate text-lg">{task.title}</CardTitle>
+            <CardTitle className="truncate text-lg font-mono">
+              {task.title}
+            </CardTitle>
           </div>
 
           <Button

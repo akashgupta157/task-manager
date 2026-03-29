@@ -3,14 +3,19 @@
 import axios from "axios";
 import { useState } from "react";
 import type { Project } from "@/types";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
+import { useUser } from "@/contexts/userContext";
 import { FolderIcon, Loader2 } from "lucide-react";
 import { ProjectCard } from "@/components/projectCard";
 import { ProjectModal } from "@/components/modals/projectModal";
 
 export default function ProjectsPage() {
-  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const { user } = useUser();
+  const router = useRouter();
 
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
   const {
     data: projects = [],
     isLoading,
@@ -30,7 +35,13 @@ export default function ProjectsPage() {
           <h1 className="text-2xl font-bold">Projects</h1>
           <p className="text-muted-foreground">Manage your projects</p>
         </div>
-        <ProjectModal onSuccess={() => refetch()} />
+
+        {user?.role === "admin" && (
+          <Button onClick={() => router.push("/projects/new")}>
+            <FolderIcon className="size-4" />
+            New Project
+          </Button>
+        )}
       </div>
 
       {isLoading ? (

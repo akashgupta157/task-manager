@@ -42,7 +42,7 @@ export default function TaskBoard({
       {statusList.map((status) => (
         <Card key={status.label} className="flex flex-col h-fit">
           <CardHeader className="shrink-0">
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 font-mono">
               <status.icon className={status.color} /> {status.label}
             </CardTitle>
           </CardHeader>
