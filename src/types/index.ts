@@ -18,6 +18,8 @@ export interface Task {
   title: string;
   description: string;
   status: string;
+  project: Project;
+  assignedTo: User;
   project_id: string;
   assigned_to: string;
   created_by: string;

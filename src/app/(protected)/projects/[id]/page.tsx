@@ -1,13 +1,18 @@
 "use client";
 import axios from "axios";
 import { useParams } from "next/navigation";
+import TaskBoard from "@/components/taskBoard";
 import { useQuery } from "@tanstack/react-query";
 import { ListTodo, Loader2 } from "lucide-react";
 
 export default function ProjectDetailsPage() {
   const { id } = useParams<{ id: string }>();
 
-  const { data: projectDetails, isLoading } = useQuery({
+  const {
+    data: projectDetails,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["project-details", id],
     queryFn: async () => {
       const { data } = await axios.get(`/api/project/${id}/task`);
@@ -34,7 +39,7 @@ export default function ProjectDetailsPage() {
 
       <div>
         {projectDetails?.tasks.length > 0 ? (
-          <div></div>
+          <TaskBoard tasks={projectDetails?.tasks} refetch={refetch} />
         ) : (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">

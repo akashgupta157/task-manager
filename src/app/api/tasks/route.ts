@@ -21,7 +21,12 @@ export async function GET() {
 
   let query = supabase
     .from("tasks")
-    .select("*")
+    .select(
+      `*,
+      assignedTo:profiles(id, username, role),
+      project:projects(id, title)
+    `,
+    )
     .order("created_at", { ascending: false });
 
   if (userRole.role === "employee") {
