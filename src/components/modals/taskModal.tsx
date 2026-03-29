@@ -134,12 +134,21 @@ export function TaskModal({
     }
   };
 
+  const isCreator = task?.created_by === user?.id;
+  const isAssignee = task?.assigned_to === user?.id;
+
   const canCreate = user?.role === "admin" || user?.role === "manager";
+
   const canEdit =
+    !isEdit ||
     user?.role === "admin" ||
-    (user?.role === "manager" && task?.created_by === user?.id);
+    (user?.role === "manager" && isCreator);
+
   const canEditStatus =
-    canEdit || (user?.role === "employee" && task?.assigned_to === user?.id);
+    user?.role === "admin" ||
+    (user?.role === "manager" && (isCreator || isAssignee)) ||
+    (user?.role === "employee" && isAssignee);
+
   const selectedUser = users.find((u) => u.id === form.watch("assigned_to"));
 
   return (

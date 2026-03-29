@@ -87,8 +87,26 @@ export async function PUT(
     return NextResponse.json({ success: true });
   }
 
-  if (userRole.role === "manager" && existingTask.created_by !== user.id) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (userRole.role === "manager") {
+    const isCreator = existingTask.created_by === user.id;
+    const isAssignee = existingTask.assigned_to === user.id;
+
+    if (!isCreator && !isAssignee) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const { error } = await supabase
+      .from("tasks")
+      .update({
+        status: body.status,
+      })
+      .eq("id", id);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true });
   }
 
   const { error } = await supabase
@@ -126,15 +144,45 @@ export async function DELETE(
 
   const userRole = await getUserRole(supabase, user.id);
 
-  if (!userRole || userRole.role !== "admin") {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!userRole) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { error } = await supabase.from("tasks").delete().eq("id", id);
+  const { data: existingTask, error: fetchError } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("id", id)
+    .single();
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  if (fetchError || !existingTask) {
+    return NextResponse.json({ error: "Task not found" }, { status: 404 });
   }
 
-  return NextResponse.json({ success: true });
+  const isCreator = String(existingTask.created_by) === String(user.id);
+
+  if (userRole.role === "admin") {
+    const { error } = await supabase.from("tasks").delete().eq("id", id);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true });
+  }
+
+  if (userRole.role === "manager") {
+    if (!isCreator) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const { error } = await supabase.from("tasks").delete().eq("id", id);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true });
+  }
+
+  return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 }
