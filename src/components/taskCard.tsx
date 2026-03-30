@@ -1,6 +1,5 @@
-import { Button } from "./ui/button";
 import type { Task } from "@/types";
-import { MoreVertical } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -16,8 +15,12 @@ interface TaskCardProps {
 }
 
 export function TaskCard({ task, onEdit }: TaskCardProps) {
+  const router = useRouter();
   return (
-    <Card className="group hover:shadow-md transition-shadow mb-4">
+    <Card
+      className="group hover:shadow-md transition-shadow mb-4"
+      onClick={() => router.push(`/tasks/${task.id}`)}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
@@ -25,15 +28,6 @@ export function TaskCard({ task, onEdit }: TaskCardProps) {
               {task.title}
             </CardTitle>
           </div>
-
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="opacity-0 group-hover:opacity-100 transition-opacity"
-            onClick={() => onEdit(task)}
-          >
-            <MoreVertical className="size-4" />
-          </Button>
         </div>
       </CardHeader>
       <CardContent>

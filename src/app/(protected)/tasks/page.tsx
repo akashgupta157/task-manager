@@ -2,12 +2,17 @@
 
 import axios from "axios";
 import type { Task } from "@/types";
+import { useRouter } from "next/navigation";
 import TaskBoard from "@/components/taskBoard";
+import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { ListTodo, Loader2 } from "lucide-react";
-import { TaskModal } from "@/components/modals/taskModal";
+import { useUser } from "@/contexts/userContext";
 
 export default function TasksPage() {
+  const router = useRouter();
+  const { user } = useUser();
+
   const {
     data: tasks = [],
     isLoading,
@@ -31,7 +36,13 @@ export default function TasksPage() {
           <h1 className="text-2xl font-bold">Tasks</h1>
           <p className="text-muted-foreground">Manage your tasks</p>
         </div>
-        <TaskModal onSuccess={() => refetch()} />
+
+        {user?.role === "employee" || (
+          <Button onClick={() => router.push("/tasks/new")}>
+            <ListTodo className="size-4" />
+            New Task
+          </Button>
+        )}
       </div>
 
       {isLoading ? (
