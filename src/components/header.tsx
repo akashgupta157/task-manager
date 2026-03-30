@@ -13,7 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function Header() {
-  const { setUser } = useUser();
+  const { setUser, setLoading } = useUser();
   const pathname = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -29,6 +29,7 @@ export function Header() {
   useEffect(() => {
     if (profile) {
       setUser(profile);
+      setLoading(false);
     }
   }, [profile, setUser]);
 

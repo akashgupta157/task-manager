@@ -9,13 +9,20 @@ export default function TasksNewLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = useUser();
+  const { user, loading } = useUser();
 
   useEffect(() => {
     if (user && user.role !== "admin" && user.role !== "manager") {
       redirect("/tasks");
     }
   }, [user]);
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen pt-20">
+        Loading...
+      </div>
+    );
 
   return children;
 }
